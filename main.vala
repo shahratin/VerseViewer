@@ -23,7 +23,7 @@ const int ayatInSura[114] = {
 	    21, 11,  8,   8,   19,  5,   8,   8,   11,  11,  8,   3,   9,
 	    5,  4,   7,   3,   6,   3,   5,   4,   5,   6};
 int getAddress(int sura, int ayat) {
-	
+
 	int ayatsInPreviousSuras = 0;
 	for (int i = 0; i < sura; i++) {
 		ayatsInPreviousSuras = ayatsInPreviousSuras + ayatInSura[i];
@@ -41,7 +41,7 @@ string getText(int index, string path) {
 		var dis = new DataInputStream(file.read());
 		string line;
 		while ((line = dis.read_line(null)) != null) {
-     
+
 	if (line.split("|").length >1){
 		arrayOfAyat += line.split("|")[2];
 	}else{
@@ -81,7 +81,7 @@ static void main(string[] args) {
 			error("Cannot load CSS stylesheet: %s", e.message);
 		}
 	};
-	
+
 	var vbox_main = new Box(Orientation.VERTICAL, 0);
 	var header_bar = new HeaderBar();
 	var hbox_nav = new Box(Orientation.HORIZONTAL, 0);
@@ -180,14 +180,14 @@ static void main(string[] args) {
 static void on_btn_show_clicked() {
   	string q, e, b, qx, ex, bx, empty;
   	q = getText(getAddress((int)surano, (int)ayano),
-			   "text/quran/quran-simple.txt");
+			   "text/quran/quran-uthmani.txt");
   	e = getText(getAddress((int)surano, (int)ayano),
 		    "text/trans/en.yusufali.trans/en.yusufali.txt");
   	b = getText(getAddress((int)surano, (int)ayano),
 		  "text/trans/bn.bengali.trans/bn.bengali.txt") ;
-	
+
 	empty = "<span face=\"Al Qalam Quran Majeed\" size=\"small\" style=\"normal\" weight=\"normal\">%s\n</span>".printf(" ");
-	qx = "<span face=\"Al Qalam Quran Majeed\" size=\"xx-large\" style=\"normal\" weight=\"normal\">%s\n</span>".printf(q);
+	qx = "<span face=\"me_quran\" size=\"xx-large\" style=\"normal\" weight=\"normal\">%s\n</span>".printf(q);
 	ex = "<span face=\"Georgia\" size=\"medium\" weight=\"light\">%s\n</span>".printf(e);
 	bx = "<span face=\"Lohit Bengali\" size=\"medium\" weight=\"normal\">%s\n</span>".printf(b);
 
