@@ -108,8 +108,8 @@ static void main(string[] args) {
 
 	var btn_show = new Button.with_label("Show");
 	var btn_next = new Button.with_label("Next");
-	var btn_listen = new Button.with_label("Listen");
-	btn_play_mode = new ToggleButton.with_label("Continuous");
+	var btn_listen = new Button.with_label("▶️");
+	btn_play_mode = new ToggleButton.with_label("⏩");
 	btn_show.clicked.connect(on_btn_show_clicked);
 	btn_next.clicked.connect(on_btn_next_clicked);
 	btn_listen.clicked.connect(on_btn_listen_clicked);
@@ -160,8 +160,8 @@ static void main(string[] args) {
 	hbox_nav.add(combobox);
 	hbox_nav.add(btn_listen);
 	hbox_nav.add(btn_play_mode);
-	hbox_nav.add(btn_show);
-	hbox_nav.add(btn_next);
+	//hbox_nav.add(btn_show);
+	//hbox_nav.add(btn_next);
 
 
 	hbox_nav.get_style_context().add_class("my_combobox");
@@ -187,7 +187,7 @@ static void on_btn_show_clicked() {
 		  "text/trans/bn.bengali.trans/bn.bengali.txt") ;
 
 	empty = "<span face=\"Al Qalam Quran Majeed\" size=\"small\" style=\"normal\" weight=\"normal\">%s\n</span>".printf(" ");
-	qx = "<span face=\"me_quran\" size=\"xx-large\" style=\"normal\" weight=\"normal\">%s\n</span>".printf(q);
+	qx = "<span face=\"Al Qalam Quran Majeed\" size=\"xx-large\" style=\"normal\" weight=\"normal\">%s\n</span>".printf(q);
 	ex = "<span face=\"Georgia\" size=\"medium\" weight=\"light\">%s\n</span>".printf(e);
 	bx = "<span face=\"Lohit Bengali\" size=\"medium\" weight=\"normal\">%s\n</span>".printf(b);
 
@@ -300,27 +300,14 @@ on_btn_listen_clicked() {
 		       formatted_sura + "/" + formatted_sura + formatted_aya +
 		       ".mp3";
 	player.play(filename.replace("\\", "/"));
-	//  print(player.s);
 	while (player.s != "PLAYING"){
-		//  print(player.s);
 	}
 }
 public static void
 on_btn_next_clicked() {
-	//  print(surano.to_string());
-	//  print("\n");
-	//  print(ayano.to_string());
-	//  print("\n");
-	//  print(ayatInSura[(int)surano].to_string());
-	//  print("\n");
 	if(ayano<ayatInSura[(int)surano]-1){
 		select_aya_box.spin(STEP_FORWARD, 1);
-		//  ayano++;
-		//  on_btn_show_clicked();
 	}else{
-		//  surano++;
-		//  ayano = 0;
-		//  on_btn_show_clicked();
 		select_sura_box.spin(STEP_FORWARD, 1);
 	}
 }
