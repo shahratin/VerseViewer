@@ -315,8 +315,8 @@ public static void
 on_btn_play_mode_clicked() {
 	if (cont == true){
 		cont = false;
-	}else{
+		}else{
 		cont=true;
-	}
+		}
 	print(cont.to_string());
 }
