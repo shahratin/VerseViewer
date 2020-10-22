@@ -189,7 +189,7 @@ static void on_btn_show_clicked() {
 
     //  empty = "<span face=\"Al Qalam Quran Majeed\" size=\"small\" style=\"normal\" weight=\"normal\">%s\n</span>".printf(" ");
     empty = "<span size=\"small\" style=\"normal\" weight=\"normal\">%s\n</span>".printf(" ");
-    qx = "<span face=\"Calibri\" size=\"xx-large\" style=\"normal\" weight=\"normal\">%s ۝\n</span>".printf(q);
+    qx = "<span face=\"LPMQ Isep Misbah\" size=\"xx-large\" style=\"normal\" weight=\"normal\">%s ۝\n</span>".printf(q);
     //  qx = "<span face=\"Scheherazade\">%s ۝\n</span>".printf(q);
     ex = "<span face=\"Georgia\" size=\"medium\" weight=\"light\">%s\n</span>".printf(e);
     bx = "<span face=\"Lohit Bengali\" size=\"medium\" weight=\"normal\">%s\n</span>".printf(b);
