@@ -5,7 +5,7 @@ GtkWindow {
 	background-color: #000000;
 }
  .my_class {
-	font-size: 30px;
+	font-size: 24px;
 /*	color: black;*/
 }
 /* .my_class {
@@ -25,8 +25,8 @@ font-family: SolaimanLipi;
 } */
 
  .my_combobox {
- 	font-family: Arial, Trebuchet MS, Helvetica, Monofur;
- 	font-size: 20px;
+ 	font-family: Segoe, Arial, Trebuchet MS, Helvetica, Monofur;
+ 	font-size: 12px;
 } 
 
 /* spinbutton, button {
