@@ -4,7 +4,9 @@ using GLib;
 using Gtk;
 
 static TextView text_view;
-Gtk.ComboBox combobox;
+//-Gtk4
+//Gtk.ComboBox combobox;
+Gtk.DropDown combobox;
 Gtk.SpinButton  select_sura_box;
 Gtk.SpinButton select_aya_box;
 Gtk.ToggleButton btn_play_mode;
@@ -56,26 +58,33 @@ string getText(int index, string path) {
 }
 
 static void main(string[] args) {
-    Gtk.init(ref args);
+    //Gtk.init(ref args);
+    Gtk.init();
     Gst.init(ref args);
 
     var window_main = new Window();
-    try {
+    // TODO: Set icon using +Gtk4
+    /*try {
         window_main.icon = new Gdk.Pixbuf.from_file ("icon.ico");
     } catch (Error e) {
         stderr.printf ("Could not load application icon: %s\n", e.message);
-    }
+    }*/
     window_main.title = "Verse viewer";
     window_main.set_default_size(400, 500);
-    window_main.destroy.connect(Gtk.main_quit);
+    //TODO: window_main destroy
+    //window_main.destroy.connect(Gtk.main_quit);
     var css_provider = new Gtk.CssProvider();
     string path = "styleapp.css";
-    var screen = window_main.get_screen();
+    //Changed get_screen to get_display -Gtk4
+    var screen = window_main.get_display();
+    //var screen = window_main.get_screen();
     var cssfile = File.new_for_path("styleapp.css");
+
     if (FileUtils.test(path, FileTest.EXISTS)) {
         try {
             css_provider.load_from_file(cssfile);
-            Gtk.StyleContext.add_provider_for_screen(
+            //Changed add_provider_for_screen to add_provider_for_display -Gtk4
+            Gtk.StyleContext.add_provider_for_display(
                 screen, css_provider,
                 Gtk.STYLE_PROVIDER_PRIORITY_USER);
         } catch (Error e) {
@@ -92,7 +101,9 @@ static void main(string[] args) {
         surano = select_sura_box.adjustment.value - 1;
         select_aya_box.set_range(1, ayatInSura[(int)surano]);
         select_aya_box.adjustment.value = 1;
-        combobox.set_active((int)surano);
+        // Set combobox to Gtk.DropDown +Gtk4
+        //combobox.set_active((int)surano);
+        combobox.set_selected((uint)surano);
         on_btn_show_clicked();
     });
     select_aya_box.adjustment.value_changed.connect(() => {
@@ -103,9 +114,14 @@ static void main(string[] args) {
     text_view.editable = false;
     text_view.cursor_visible = false;
 
-    var scroll = new ScrolledWindow(null, null);
-    scroll.set_policy(PolicyType.AUTOMATIC, PolicyType.AUTOMATIC);
-    scroll.set_placement(Gtk.CornerType.TOP_RIGHT);
+    //-Gtk4
+    //var scroll = new ScrolledWindow(null, null);
+    var scroll = new ScrolledWindow();
+    //scroll.set_policy(PolicyType.AUTOMATIC, PolicyType.AUTOMATIC);
+    //scroll.set_placement(Gtk.CornerType.TOP_RIGHT);
+    
+    // scroll.set_size_request (-1, 600);
+    scroll.vexpand = true;
 
     var btn_show = new Button.with_label("Show");
     var btn_next = new Button.with_label("Next");
@@ -138,44 +154,77 @@ static void main(string[] args) {
         liststore.set(iter, Column.sura, sura_list[i]);
     }
 
-    combobox = new Gtk.ComboBox.with_model(liststore);
+    //-Gtk
+    //combobox = new Gtk.ComboBox.with_model(liststore);
+    combobox = new Gtk.DropDown.from_strings(sura_list);
 
     Gtk.CellRendererText cell = new Gtk.CellRendererText();
     Gtk.CellRendererPixbuf cell_pb = new Gtk.CellRendererPixbuf();
+    //-Gtk4
+    /*
     combobox.pack_start(cell_pb, false);
     combobox.pack_start(cell, false);
     combobox.set_attributes(cell, "text", Column.sura);
-    combobox.set_active((int)surano);
-    combobox.changed.connect(() => {
+    */
+    //-Gtk4
+    //combobox.set_active((int)surano);
+    combobox.set_selected((uint)surano);
+    //-Gtk4
+    /*combobox.changed.connect(() => {
 
         select_sura_box.adjustment.value =
         1 + (double)combobox.get_active();
-    });
+    });*/
+    combobox.notify["selected"].connect( () => {
+      select_sura_box.adjustment.value =
+      1 + (double)combobox.get_selected();
+      });
 
-    scroll.add(text_view);
+    //scroll.add(text_view);
+    Gtk.Builder builder;
+    builder = new Gtk.Builder();
+    scroll.child = text_view;
 
-    vbox_main.pack_start(scroll, true, true);
+    //vbox_main.pack_start(scroll, true, true);
+    vbox_main.add_child(builder, scroll, null);
 
-    hbox_nav.add(select_sura_box);
+    //hbox_nav.add(select_sura_box);
+    hbox_nav.add_child(builder, select_sura_box, null);
+    /*
     hbox_nav.add(select_aya_box);
     hbox_nav.add(combobox);
     hbox_nav.add(btn_listen);
     hbox_nav.add(btn_play_mode);
+    */
+
+    hbox_nav.add_child(builder, select_aya_box, null);
+    hbox_nav.add_child(builder, combobox, null);
+    hbox_nav.add_child(builder, btn_listen, null);
+    hbox_nav.add_child(builder, btn_play_mode, null);
+
+
     //hbox_nav.add(btn_show);
     //hbox_nav.add(btn_next);
 
 
     hbox_nav.get_style_context().add_class("my_combobox");
-    header_bar.add(hbox_nav);
-    header_bar.set_show_close_button(true);
-    header_bar.show_all();
-    window_main.add(vbox_main);
+    //header_bar.add(hbox_nav);
+    header_bar.add_child(builder, hbox_nav, null);
+    //header_bar.set_show_close_button(true);
+    //header_bar.show_all();
+    header_bar.show();
+    //window_main.add(vbox_main);
+    window_main.add_child(builder, vbox_main, null);
     window_main.set_titlebar(header_bar);
-    window_main.show_all();
+    //window_main.show_all();
+    window_main.present();
     select_aya_box.set_range(1, ayatInSura[(int)surano]);
     on_btn_show_clicked();
 
-    Gtk.main();
+    //Gtk.main();
+    while (Gtk.Window.get_toplevels ().get_n_items () > 0) {
+        GLib.MainContext.@default ().iteration (true);
+    }
 }
 
 static void on_btn_show_clicked() {
